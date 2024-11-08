@@ -8,11 +8,11 @@ const Product = ({ id, image, title, rating, price }) => {
 
   const addToBasketHandler = () => {
     const item = { id, image, title, rating, price };
-    addToBasket(item);  // No need to wrap it inside `item: { ... }`
+    addToBasket(item); 
   };
 
   return (
-    <div className="product">
+    <div className="product" key={id}>
       <img src={image} alt="" />
       <div className="product_info">
         <p>{title}</p>

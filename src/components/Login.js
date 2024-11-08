@@ -1,22 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Login.css";
+import {auth} from "../Firebase";
 
 const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory()
+  const history = useHistory();
+
 
   const signIn = (e) => {
     e.preventDefault();
-    console.log("Email: ", email + "Password", password);
-  }
-  const signup = (e) => {
-    e.preventDefault();
-    console.log("Email: ", email + "Password", password);
-  }
+    auth.signInWithEmailAndPassword(email, password)
+    .then(auth => {
+      history.push("/");
+    }).catch(error => alert(error.message));
 
- 
+  };
+
+  const register = (e) => {
+    e.preventDefault();
+    auth.createUserWithEmailAndPassword(email, password).then(auth => {
+      if(auth) {
+        history.push("/");
+      }
+    }).catch(error => alert(error.message));
+
+  }
 
   return (
     <div className="login">
@@ -49,7 +60,7 @@ const Login = () => {
         <p>
           By signing in you agree to the Amazon Clone Terms & Conditions...
         </p>
-        <button className="login_registerButton" onClick={signup}>
+        <button className="login_registerButton" onClick={register}>
           Create your Amazon Account
         </button>
       </div>

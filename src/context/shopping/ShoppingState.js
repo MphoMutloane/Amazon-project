@@ -1,20 +1,16 @@
 import React, { useReducer } from "react";
-import shoppingContext from "./shoppingContext";
+import ShoppingContext from "./shoppingContext";
 import { shoppingReducer } from "./shoppingReducer";
 
-const ShoppingState = ({ children }) => {
+const ShoppingState = (props) => {
   const initialState = {
     basket: [],
     user: null,
   };
-
   const [state, dispatch] = useReducer(shoppingReducer, initialState);
 
-  const setUser = (user) => {
-    dispatch({
-      type: "SET_USER",
-      payload: user,
-    });
+  const getBasketTotal = (basket) => {
+    return basket?.reduce((amount, item) => item.price + amount, 0);
   };
 
   const addToBasket = (item) => {
@@ -24,17 +20,49 @@ const ShoppingState = ({ children }) => {
     });
   };
 
+  const removeFromBasket = (item) => {
+    dispatch({
+      type: "REMOVE_FROM_BASKET",
+      payload: item,
+    });
+  };
+
+  const emptyBasket = () => {
+    dispatch({
+      type: "EMPTY_BASKET",
+    });
+  }
+
+  const setUser = (user) => {
+    dispatch({
+      type: "SET_USER",
+      payload: user,
+    });
+  };
+
   return (
-    <shoppingContext.Provider
+    <ShoppingContext.Provider
       value={{
         basket: state.basket,
         user: state.user,
-        setUser,
+        getBasketTotal,
         addToBasket,
-      }}
-    >
-      {children}
-    </shoppingContext.Provider>
+        setUser,
+        removeFromBasket,
+        emptyBasket,
+      }}>
+      {props.children}
+    </ShoppingContext.Provider>
+    // <ShoppingContext.Provider
+    //   value={{
+    //     basket: state.basket,
+    //     user: state.user,
+    //     setUser,
+    //     addToBasket,
+    //   }}
+    // >
+    //   {children}
+    // </ShoppingContext.Provider>
   );
 };
 

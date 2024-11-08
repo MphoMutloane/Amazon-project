@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import React from "react";
-import { SearchIcon, ShoppingCartIcon } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/outline";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import ShoppingContext from "../../context/shopping/shoppingContext";
 import "./Header.css";
 import { Link } from "react-router-dom";
@@ -52,9 +53,9 @@ const Header = () => {
         </div>
         <Link to="/checkout">
           <div className="header_optionBasket">
-            <ShoppingCartIcon className="header_cartIcon" />
+            <ShoppingBasketIcon />
             <span className="header_optionTwo header_basketCount">
-              {basket?.length || 0}
+              {basket?.length}
             </span>
           </div>
         </Link>
